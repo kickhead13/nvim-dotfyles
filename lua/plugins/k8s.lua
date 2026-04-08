@@ -10,6 +10,8 @@ return {
     dependencies = "saghen/blink.download",
     config = function()
       require("kubectl").setup()
+      local set = vim.keymap.set
+      set("n", "<leader>kp", ":Kubectl view pods<CR>", { desc = "Kubectl view pods." })
     end,
   },
 }
