@@ -19,7 +19,7 @@ return {
     lazy = false,
     keys = {
       {
-        "F", -- try it if you didn't it is a banger keybinding for a picker
+        "FF", -- try it if you didn't it is a banger keybinding for a picker
         function() require('fff').find_files() end,
         desc = 'FFFind files',
       },

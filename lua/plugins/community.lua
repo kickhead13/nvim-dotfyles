@@ -7,7 +7,9 @@ return {
   { import = "astrocommunity.pack.rust" },  -- Better rendering
   { import = "astrocommunity.pack.bash" },  -- Better rendering
   { import = "astrocommunity.pack.go" },  -- Better rendering
-    -- Then configure lazydocker to load on startup
+  { import = "astrocommunity.pack.python" },  -- Better rendering
+  
+  -- Then configure lazydocker to load on startup
   
   -- { import = "astrocommunity.markdown-and-latex.nvim-table-md" },        -- Table formatting
   { import = "astrocommunity.media.img-clip-nvim" },                     -- Paste images

@@ -12,6 +12,16 @@ return {
       require("kubectl").setup()
       local set = vim.keymap.set
       set("n", "<leader>kp", ":Kubectl view pods<CR>", { desc = "Kubectl view pods." })
+      set('n', '<leader>kDn', function()
+        vim.ui.input({
+          prompt = "Enter node to be debugged (something like 'worker-1' for example): ",
+          default = "",
+        }, function(input)
+          if input and input ~= "" then
+            vim.cmd(":Kubectl debug nodes/" .. input .. " -it --image=debian")
+          end
+        end)
+      end, {desc = "Start a node debugger in current namespace."})
     end,
   },
 }
