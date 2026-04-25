@@ -2,33 +2,34 @@
 local keymaps = {}
 
 function keymaps.setup()
-  -- wget keybind
-  --
   vim.keymap.set('n', '<leader>sta', function()
-    vim.ui.input({
-      prompt = "TopicLabels: ",
-      default = "",
-    }, function(topic)
+    local topics_dir = "./st/topics/"
+    local topics = {}
+    local topic_dirs = vim.fn.globpath(topics_dir, "*/", 0, 1)
+    for _, dir in ipairs(topic_dirs) do
+      local name = vim.fn.fnamemodify(dir, ":p:h:t")
+      vim.notify(vim.fn.fnamemodify(dir, ":p:h:t"))
+
+      if name ~= "" then table.insert(topics, name) end
+    end
+
+    vim.ui.select(topics, { prompt = "Select Topic:" }, function(topic)
       if not topic or topic == "" then return end
-      
-      vim.ui.input({
-        prompt = "Task: ",
-        default = "",
-      }, function(task)
+
+      vim.ui.input({ desc = "Task:" }, function(task)
         if not task or task == "" then return end
         vim.fn.system("st add -T " .. vim.fn.shellescape(topic))
         vim.fn.system("st add -T " .. vim.fn.shellescape(topic) .. " -a " .. vim.fn.shellescape(task))
         if not vim.v.shell_error == 0 then
           vim.notify("st failed", vim.log.levels.ERROR)
         end
-        local base = ".st/topics/" .. topic .. "/" .. task .. "/"
+        local base = "st/topics/" .. topic .. "/" .. task .. "/"
         local files = {
           "DESC.md",
           "SHORT_DESC.md",
           "LABELS",
           "NOTES.md"
         }
-
         -- Open the first file in the current window
         vim.cmd("edit " .. base .. files[1])
         -- Open the rest in vertical splits
@@ -39,13 +40,22 @@ function keymaps.setup()
     end)
   end, { desc = "Download layout from specific org." })
 
+
   vim.keymap.set('n', '<leader>stl', function()
-    vim.ui.input({
-      prompt = "Topic: ",
-      default = "",
-    }, function(topic)
+    -- Get topics (directories in st/topics/)
+    local topics_dir = "./st/topics/"
+    local topics = {}
+    local topic_dirs = vim.fn.globpath(topics_dir, "*/", 0, 1)
+    for _, dir in ipairs(topic_dirs) do
+      local name = vim.fn.fnamemodify(dir, ":p:h:t")
+      vim.notify(vim.fn.fnamemodify(dir, ":p:h:t"))
+
+      if name ~= "" then table.insert(topics, name) end
+    end
+
+    vim.ui.select(topics, { prompt = "Select Topic:" }, function(topic)
       if not topic or topic == "" then return end
-      
+
       vim.ui.input({
         prompt = "Labels: ",
         default = "",
